@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ALTINZADE | IBAN Bilgileri</title>
+  <meta name="description" content="Hesap sahibi adı ve IBAN bilgisi.">
+  <!-- Arama motorlarında görünmesini istemiyorsanız bu satır kalsın; görünmesini istiyorsanız silin. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#071a17">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%8E%3C/text%3E%3C/svg%3E">
+
+  <style>
+    @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+
+    :root {
+      --bg: #071a17;
+      --bg-soft: #0f2d28;
+      --gold-1: #f6e2a0;
+      --gold-2: #d9b440;
+      --gold-3: #a9791f;
+      --ivory: #f8f1e0;
+      --muted: #b4ae98;
+      --line: rgba(217, 180, 64, 0.3);
+      --serif: "Didot", "Bodoni MT", "Playfair Display", "Hoefler Text", Georgia, "Times New Roman", serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background: var(--bg); }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(28px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+      color: var(--ivory);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(900px 520px at 50% -8%, rgba(217, 180, 64, 0.24), transparent 70%),
+        radial-gradient(700px 500px at 100% 100%, rgba(217, 180, 64, 0.12), transparent 70%),
+        radial-gradient(600px 400px at 0% 90%, rgba(40, 140, 110, 0.14), transparent 70%),
+        linear-gradient(160deg, var(--bg-soft) 0%, var(--bg) 55%, #040d0c 100%);
+    }
+
+    /* Duvar kağıdı: altın çizgilerle elmas, yüzük ve ışıltı deseni (yavaşça kayar) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160' fill='none' stroke='rgb(217,180,64)' stroke-opacity='.22' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M26 36 L36 26 H52 L62 36 L44 62 Z'/%3E%3Cpath d='M26 36 H62 M36 26 L44 36 L52 26 M44 36 V62'/%3E%3Ccircle cx='120' cy='122' r='13'/%3E%3Ccircle cx='120' cy='122' r='9'/%3E%3Cpath d='M120 100 L125 107 L120 112 L115 107 Z'/%3E%3Cpath d='M118 20 V40 M108 30 H128 M111 23 L125 37 M125 23 L111 37' stroke-opacity='.16'/%3E%3Ccircle cx='28' cy='128' r='2.2' fill='rgb(217,180,64)' fill-opacity='.3'/%3E%3Ccircle cx='80' cy='84' r='1.6' fill='rgb(217,180,64)' fill-opacity='.3'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, #000 78%);
+      mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, #000 78%);
+      animation: drift 120s linear infinite;
+    }
+
+    @keyframes drift { to { background-position: 160px 160px; } }
+
+    /* Sayfanın üstünde ince altın şerit */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      z-index: 3;
+      background: linear-gradient(90deg, transparent, var(--gold-3), var(--gold-1), var(--gold-3), transparent);
+    }
+
+    #dust { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+    /* Büyük, silik süs objeleri */
+    .decor { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+    .decor svg {
+      position: absolute;
+      fill: none;
+      stroke: var(--gold-2);
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      opacity: 0.3;
+      filter: drop-shadow(0 0 14px rgba(217, 180, 64, 0.5));
+      animation: float 14s ease-in-out infinite alternate;
+    }
+    .decor .g1 { width: 150px; top: 7%;  left: 5%;  --r: -14deg; }
+    .decor .g2 { width: 190px; bottom: 6%; right: 5%; --r: 10deg; animation-delay: -5s; }
+    .decor .g3 { width: 82px;  top: 26%; right: 13%; --r: 18deg; animation-delay: -9s; opacity: 0.22; }
+    .decor .g4 { width: 96px;  bottom: 22%; left: 10%; --r: -8deg; animation-delay: -3s; opacity: 0.2; }
+
+    @keyframes float {
+      from { transform: translateY(0) rotate(var(--r)); }
+      to   { transform: translateY(-22px) rotate(calc(var(--r) + 6deg)); }
+    }
+
+    .wrap { position: relative; z-index: 2; width: 100%; max-width: 480px; }
+
+    /* Açılışta tek seferlik, sıralı belirme */
+    .reveal { opacity: 0; transform: translateY(16px); animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards; animation-delay: var(--d, 0s); }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* Başlık */
+    .brand { text-align: center; margin-bottom: 30px; }
+    .brand-gem { width: 46px; height: 46px; margin: 0 auto 14px; display: block; filter: drop-shadow(0 0 12px rgba(217, 180, 64, 0.55)); }
+
+    .shop-name {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(2.1rem, 9vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0.03em;
+      overflow-wrap: anywhere;
+      color: var(--gold-1);
+      background: linear-gradient(100deg, #b98a25 0%, #f6e2a0 22%, #d9b440 38%, #fff7d6 50%, #d9b440 62%, #b98a25 100%);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 7s linear infinite;
+    }
+    @keyframes shine { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+
+    .divider { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; }
+    .divider::before, .divider::after { content: ""; height: 1px; width: 70px; background: linear-gradient(90deg, transparent, var(--gold-2)); }
+    .divider::after { transform: scaleX(-1); }
+    .divider i { width: 8px; height: 8px; background: var(--gold-2); transform: rotate(45deg); box-shadow: 0 0 10px var(--gold-2); }
+
+    /* Kart */
+    .card {
+      position: relative;
+      background: linear-gradient(160deg, rgba(14, 38, 33, 0.82), rgba(6, 20, 18, 0.86));
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(217, 180, 64, 0.18);
+      border-radius: 24px;
+      padding: 34px 28px 28px;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+        0 28px 70px rgba(0, 0, 0, 0.5),
+        0 0 90px rgba(217, 180, 64, 0.09);
+      transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform 0.25s ease-out;
+      will-change: transform;
+    }
+
+    /* Dönen altın kenar ışığı */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(from var(--angle), rgba(217, 180, 64, 0) 0%, rgba(217, 180, 64, 0) 58%, rgba(246, 226, 160, 0.95) 78%, rgba(217, 180, 64, 0) 96%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      pointer-events: none;
+      animation: spin 8s linear infinite;
+    }
+    @keyframes spin { to { --angle: 360deg; } }
+
+    /* İmleci takip eden parlama */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(246, 226, 160, 0.11), transparent 62%);
+      pointer-events: none;
+    }
+
+    .card > * { position: relative; z-index: 1; }
+
+    .label { margin: 0 0 6px; font-size: 0.875rem; color: var(--muted); }
+
+    .name {
+      margin: 0 0 16px;
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 7vw, 2.15rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+      color: var(--ivory);
+      overflow-wrap: anywhere;
+    }
+    .name-group { margin-bottom: 26px; }
+
+    .iban-box {
+      margin: 0 0 18px;
+      padding: 16px 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(217, 180, 64, 0.10), rgba(217, 180, 64, 0.04));
+    }
+    .iban {
+      margin: 0;
+      font-size: clamp(1.05rem, 4.8vw, 1.45rem);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      font-variant-numeric: tabular-nums;
+      color: var(--ivory);
+      overflow-wrap: anywhere;
+      user-select: all;
+    }
+    .iban .grp { display: inline-block; margin: 0 0.18em; }
+
+    /* Butonlar */
+    .btn {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border: 0;
+      border-radius: 14px;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.12s ease, filter 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:active { transform: scale(0.985); }
+    .btn:focus-visible { outline: 3px solid var(--gold-1); outline-offset: 3px; }
+    .btn .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    .btn.primary {
+      color: #2a1c02;
+      background: linear-gradient(135deg, #f9e8ae 0%, #dfb742 48%, #b88a26 100%);
+      box-shadow: 0 8px 26px rgba(217, 180, 64, 0.3), 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+    }
+    .btn.primary::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      left: -60%;
+      width: 40%;
+      background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn.primary:hover::after { left: 130%; }
+    .btn.primary:hover { filter: brightness(1.05); box-shadow: 0 10px 32px rgba(217, 180, 64, 0.42), 0 1px 0 rgba(255, 255, 255, 0.55) inset; }
+
+    .btn.secondary {
+      min-height: 48px;
+      color: var(--gold-1);
+      background: rgba(217, 180, 64, 0.05);
+      border: 1px solid var(--gold-2);
+    }
+    .btn.secondary:hover { background: rgba(217, 180, 64, 0.14); }
+
+    .btn.ghost { min-height: 46px; margin-top: 8px; color: var(--muted); font-weight: 600; background: transparent; }
+    .btn.ghost:hover { color: var(--gold-1); }
+
+    /* Kopyalandı durumu */
+    .btn.done.primary { background: linear-gradient(135deg, #b9f0d2, #5fc592 55%, #2f9a6b); color: #06261a; box-shadow: 0 8px 26px rgba(80, 190, 140, 0.35); }
+    .btn.done.secondary { color: #b9f0d2; border-color: #5fc592; background: rgba(95, 197, 146, 0.14); }
+    .btn.done.ghost { color: #b9f0d2; }
+
+    /* Bildirim */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(max(22px, env(safe-area-inset-bottom)) + 8px);
+      z-index: 10;
+      max-width: calc(100vw - 32px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(95, 197, 146, 0.5);
+      background: rgba(8, 36, 27, 0.92);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #c9f5de;
+      font-size: 0.95rem;
+      font-weight: 600;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translate(-50%, 16px);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast .ic { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .toast.error { border-color: rgba(220, 100, 100, 0.55); background: rgba(48, 14, 14, 0.94); color: #ffd0d0; }
+
+    @media (max-width: 640px) {
+      .decor .g1 { width: 90px; top: 3%; left: -2%; }
+      .decor .g2 { width: 120px; bottom: 2%; right: -3%; }
+      .decor .g3, .decor .g4 { display: none; }
+    }
+    @media (max-width: 380px) { .card { padding: 28px 18px 22px; } }
+
+    /* Hareketi azaltmayı tercih edenler için */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+      .shop-name { background-position: 50% 0; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="dust" aria-hidden="true"></canvas>
+
+  <div class="decor" aria-hidden="true">
+    <svg class="g1" viewBox="0 0 48 48"><path d="M8 18 L15 8 H33 L40 18 L24 41 Z"/><path d="M8 18 H40 M15 8 L20 18 L24 8 L28 18 L33 8 M20 18 L24 41 L28 18"/></svg>
+    <svg class="g2" viewBox="0 0 64 64"><circle cx="32" cy="38" r="20"/><circle cx="32" cy="38" r="15"/><path d="M32 6 L39 14 L32 22 L25 14 Z"/><path d="M25 14 H39 M32 6 V22"/></svg>
+    <svg class="g3" viewBox="0 0 48 48"><path d="M8 18 L15 8 H33 L40 18 L24 41 Z"/><path d="M8 18 H40 M20 18 L24 41 L28 18"/></svg>
+    <svg class="g4" viewBox="0 0 48 48"><path d="M24 4 V44 M4 24 H44 M10 10 L38 38 M38 10 L10 38"/></svg>
+  </div>
+
+  <div class="wrap">
+    <header class="brand reveal" style="--d: 0.05s">
+      <svg class="brand-gem" viewBox="0 0 48 48" fill="none" stroke="#d9b440" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">
+        <path d="M8 18 L15 8 H33 L40 18 L24 41 Z"/>
+        <path d="M8 18 H40 M15 8 L20 18 L24 8 L28 18 L33 8 M20 18 L24 41 L28 18"/>
+      </svg>
+      <h1 class="shop-name" id="shopName"></h1>
+      <div class="divider" aria-hidden="true"><i></i></div>
+    </header>
+
+    <div class="reveal" style="--d: 0.3s">
+      <main class="card" id="card">
+        <div class="name-group">
+          <p class="label">Hesap sahibi</p>
+          <p class="name" id="fullName"></p>
+          <button type="button" class="btn secondary" data-copy="name">
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+            <span class="t">Hesap Adını Kopyala</span>
+          </button>
+        </div>
+
+        <div class="iban-box">
+          <p class="label">IBAN</p>
+          <p class="iban" id="ibanText"></p>
+        </div>
+
+        <button type="button" class="btn primary" data-copy="iban">
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>
+          <span class="t">IBAN'ı Kopyala</span>
+        </button>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+    <span id="toastText"></span>
+  </div>
+
+  <script>
+    /* ============================================================
+       BURAYI DEĞİŞTİRİN
+       Yalnızca aşağıdaki üç satırı kendi bilgilerinizle güncelleyin.
+       IBAN'ı boşluklu ya da boşluksuz yazabilirsiniz.
+       ============================================================ */
+    const DUKKAN_ADI = "ALTINZADE";
+    const HESAP_ADI = "ALTINZADE KUYUMCULUK İTHALAT";
+    const IBAN = "TR63 0003 2000 0000 0130 7354 84";
+    /* ============================================================ */
+
+    (function () {
+      "use strict";
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* ---------- Bilgileri ekrana yaz ---------- */
+      var cleanIban = String(IBAN).replace(/\s+/g, "").toUpperCase();
+      var fullName = HESAP_ADI;
+
+      document.getElementById("shopName").textContent = DUKKAN_ADI;
+      document.getElementById("fullName").textContent = fullName;
+      document.title = DUKKAN_ADI + " | IBAN Bilgileri";
+
+      // IBAN'ı 4'lü gruplar halinde göster
+      var ibanEl = document.getElementById("ibanText");
+      var groups = cleanIban.match(/.{1,4}/g) || [];
+      groups.forEach(function (g, i) {
+        var s = document.createElement("span");
+        s.className = "grp";
+        s.textContent = g;
+        ibanEl.appendChild(s);
+        if (i < groups.length - 1) ibanEl.appendChild(document.createTextNode(" "));
+      });
+
+      /* ---------- Kopyalama ---------- */
+      var toast = document.getElementById("toast");
+      var toastText = document.getElementById("toastText");
+      var toastTimer = null;
+
+      function showToast(text, isError) {
+        toastText.textContent = text;
+        toast.classList.toggle("error", !!isError);
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 3000);
+      }
+
+      // Eski tarayıcılar için yedek yöntem
+      function fallbackCopy(text) {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.top = "0";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      function writeClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text).then(function () { return true; })
+            .catch(function () { return fallbackCopy(text); });
+        }
+        return Promise.resolve(fallbackCopy(text));
+      }
+
+      // Her butonun kopyaladığı metin ve gösterdiği mesaj
+      var actions = {
+        name: { text: fullName, ok: "Hesap adı başarıyla kopyalandı" },
+        iban: { text: cleanIban, ok: "IBAN başarıyla kopyalandı" }
+      };
+
+      function markDone(btn) {
+        var t = btn.querySelector(".t");
+        if (!btn.dataset.label) btn.dataset.label = t.textContent;
+        t.textContent = "Kopyalandı";
+        btn.classList.add("done");
+        clearTimeout(btn._timer);
+        btn._timer = setTimeout(function () {
+          t.textContent = btn.dataset.label;
+          btn.classList.remove("done");
+        }, 1800);
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (btn) {
+        btn.addEventListener("click", function () {
+          var action = actions[btn.getAttribute("data-copy")];
+          if (!action) return;
+          writeClipboard(action.text).then(function (ok) {
+            if (ok) {
+              markDone(btn);
+              showToast(action.ok);
+              if (navigator.vibrate) navigator.vibrate(15);
+            } else {
+              showToast("Kopyalanamadı, lütfen bilgileri elle seçin", true);
+            }
+          });
+        });
+      });
+
+      /* ---------- Kart eğimi ve parlaması (yalnızca fare ile) ---------- */
+      var card = document.getElementById("card");
+      var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+      if (finePointer && !reduceMotion) {
+        card.addEventListener("pointermove", function (e) {
+          var r = card.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width;
+          var py = (e.clientY - r.top) / r.height;
+          card.style.setProperty("--ry", ((px - 0.5) * 7).toFixed(2) + "deg");
+          card.style.setProperty("--rx", ((0.5 - py) * 5).toFixed(2) + "deg");
+          card.style.setProperty("--mx", (px * 100).toFixed(1) + "%");
+          card.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+        });
+        card.addEventListener("pointerleave", function () {
+          card.style.setProperty("--rx", "0deg");
+          card.style.setProperty("--ry", "0deg");
+          card.style.setProperty("--mx", "50%");
+          card.style.setProperty("--my", "0%");
+        });
+      }
+
+      /* ---------- Altın tozu / ışıltı parçacıkları ---------- */
+      var canvas = document.getElementById("dust");
+      var ctx = canvas.getContext("2d");
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = 0, H = 0, particles = [];
+      var tx = 0, ty = 0, cx = 0, cy = 0; // fare paralaksı
+
+      // Yumuşak parıltı için bir kez çizilen sprite
+      var sprite = document.createElement("canvas");
+      sprite.width = sprite.height = 48;
+      var sctx = sprite.getContext("2d");
+      var grad = sctx.createRadialGradient(24, 24, 0, 24, 24, 24);
+      grad.addColorStop(0, "rgba(255, 244, 200, 1)");
+      grad.addColorStop(0.25, "rgba(246, 226, 160, 0.65)");
+      grad.addColorStop(1, "rgba(217, 180, 64, 0)");
+      sctx.fillStyle = grad;
+      sctx.fillRect(0, 0, 48, 48);
+
+      function makeParticle(initial) {
+        var big = Math.random() < 0.14;
+        return {
+          x: Math.random() * W,
+          y: initial ? Math.random() * H : H + 20,
+          s: big ? 10 + Math.random() * 10 : 3 + Math.random() * 6,
+          vy: 0.12 + Math.random() * 0.32,
+          sway: Math.random() * Math.PI * 2,
+          swaySpeed: 0.004 + Math.random() * 0.01,
+          tw: Math.random() * Math.PI * 2,
+          twSpeed: 0.01 + Math.random() * 0.03,
+          depth: 0.3 + Math.random() * 0.9,
+          star: big
+        };
+      }
+
+      function resize() {
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        var count = Math.max(18, Math.min(70, Math.round(W * H / 20000)));
+        particles = [];
+        for (var i = 0; i < count; i++) particles.push(makeParticle(true));
+        if (reduceMotion) draw();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          var a = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(p.tw));
+          var px = p.x + Math.sin(p.sway) * 14 + cx * 26 * p.depth;
+          var py = p.y + cy * 18 * p.depth;
+          ctx.globalAlpha = a * (p.star ? 0.9 : 0.7);
+          ctx.drawImage(sprite, px - p.s, py - p.s, p.s * 2, p.s * 2);
+          if (p.star) {
+            // Dört köşeli ışıltı
+            ctx.globalAlpha = a * 0.8;
+            ctx.strokeStyle = "rgba(255, 244, 205, 0.9)";
+            ctx.lineWidth = 1;
+            var L = p.s * 0.9;
+            ctx.beginPath();
+            ctx.moveTo(px - L, py); ctx.lineTo(px + L, py);
+            ctx.moveTo(px, py - L); ctx.lineTo(px, py + L);
+            ctx.stroke();
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function tick() {
+        cx += (tx - cx) * 0.05;
+        cy += (ty - cy) * 0.05;
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.y -= p.vy;
+          p.sway += p.swaySpeed;
+          p.tw += p.twSpeed;
+          if (p.y < -30) particles[i] = makeParticle(false);
+        }
+        draw();
+        requestAnimationFrame(tick);
+      }
+
+      window.addEventListener("resize", resize);
+      resize();
+
+      if (!reduceMotion) {
+        window.addEventListener("pointermove", function (e) {
+          tx = e.clientX / W - 0.5;
+          ty = e.clientY / H - 0.5;
+        });
+        requestAnimationFrame(tick);
+      }
+    })();
+  </script>
+</body>
+</html>
